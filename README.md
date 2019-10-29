@@ -7,7 +7,7 @@
 1. Remove the current origin remote (git remote remove origin)
 1. Create a new repository under your GitHub account (do NOT fork this repository)
 1. Follow the instructions to push an existing repository from the command line...
-1. Add answers to this Document (using a simple Text editor), commit your answers to the branch
+1. Add answers to this Document (either to this document or create different for each question), commit your answers to the branch
 1. Push your answers to your personal remote origin in your git account
 1. Send a notification to us with a link to your repository
 If any of the steps above is unclear, please try GitHub user guides.
@@ -22,5 +22,6 @@ The method of submission is part of the test (usage of Git)
 
 For both above questions what are the actions you will take to evaluate customers request? Include questions we may need to ask to get additional information to ensure the best customer support and add an explanation why you ask each question (what do you expect to receive back.
 Additionaly you need to ssh to the machine and troubleshoot the above scenarios
+Make sure you list in detail what are the steps you followed to identify and resolve the problem.
 
 Hint: The platform runs on nginx and python
