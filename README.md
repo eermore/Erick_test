@@ -20,6 +20,7 @@ The method of submission is part of the test (usage of Git)
 2. A customer has reached out to us that he cannot access our platform running on 45.33.22.50. Customer's complain is as follows:
 - "Hello, It seems i cannot access https://45.33.22.50/test2. When i access it seems that nothing happens"
 
+# Needs
 - For both above questions what are the actions you will take to evaluate customers request.
 - Include questions we may need to ask to get additional information to ensure the best customer support.
 - Add an explanation why you ask each question (what do you expect to receive back.
