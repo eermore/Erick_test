@@ -22,9 +22,60 @@ The method of submission is part of the test (usage of Git)
 
 ## To Do
 - For both above questions what are the actions you will take to evaluate customers request.
+
+* Check if I can enter or if I don't have access either.
+* Validate what is the error message, normally it could be 404 or 500.
+* What is the script supposed to do?
+* What is it actually doing?
+* Ask questions to customer to get more detail of the fault.
+
 - Include questions we may need to ask to get additional information to ensure the best customer support.
+
+* At what time did the fault occur?
+* Do you know if anyone else has the same fault?
+* When was the last time it worked correctly?
+* Was there any recent change on your system or some application recently installed?
+* What browser are you using, have you tried any other? 
+
+
+
+
+
+
 - Add an explanation why you ask each question (what do you expect to receive back.
-- Additionaly you need to ssh to the machine and troubleshoot the above scenarios
+
+The first step before starting a problem analysis is to identify if it is an isolated fault or if it is a massive problem, so it is important to collect information regarding the end user, date and time of the problem, error message, recent changes in the equipment, etc ... 
+
+- Additionaly you need to ssh to the machine and troubleshoot the above scenarios.
+
+Check log files, for example:
+
+/var/log/nginx/error.log
+
+Check coredumps:
+
+/tmp/core
+
+Check status of service of nginx
+
+sudo service nginx status
+
+if nothing happened when webpage is open is important to check with development team, maybe one line is wrong or missing.
+
+
+
+
 - Make sure you list in detail what are the steps you followed to identify and resolve the problem.
+
+1.- Get more details about the issue.
+2.- Try to replicate the fault.
+3.- Analyze error messages on the screen (webpage).
+4.- Analyze logs on the server.
+5.- If the service is down, start it and report the event to 
+    The development team.
+6.- If the service is up report to the development team.
+7.- Validate if problem has been solved.
+8.- Document the fault to get the root cause of the problem.
+
 
 Hint: The platform runs on nginx and python
