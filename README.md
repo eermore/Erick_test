@@ -75,7 +75,7 @@ if nothing happened when webpage is open is important to check with development 
     The development team.
 6.- If the service is up report to the development team.
 7.- Validate if problem has been solved.
-8.- Document the fault to get the root cause of the problem.
+8.- Document the fault to get the root cause of the problem
 
 
 Hint: The platform runs on nginx and python
