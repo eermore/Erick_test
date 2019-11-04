@@ -48,21 +48,89 @@ The first step before starting a problem analysis is to identify if it is an iso
 
 - Additionaly you need to ssh to the machine and troubleshoot the above scenarios.
 
-Check log files, for example:
+1.- Check if nginx is running:
 
-/var/log/nginx/error.log
+user2@localhost:~$ service nginx status
+  nginx.service - A high performance web server and a reverse proxy server
+   Loaded: loaded (/lib/systemd/system/nginx.service; enabled; vendor preset: enabled)
+   Active: active (running) since Wed 2019-10-30 13:59:50 UTC; 5 days ago
+     Docs: man:nginx(8)
+ Main PID: 16203 (nginx)
+    Tasks: 2 (limit: 1109)
+   CGroup: /system.slice/nginx.service
+           ??16203 nginx: master process /usr/sbin/nginx -g daemon on; master_process on;
+           ??24992 nginx: worker process
 
-Check coredumps:
+3.- Check path for errors:
 
-/tmp/core
+user2@localhost:~$ nginx -V
+nginx version: nginx/1.14.0 (Ubuntu)
+built with OpenSSL 1.1.1  11 Sep 2018
+TLS SNI support enabled
+configure arguments: --with-cc-opt='-g -O2 -fdebug-prefix-map=/build/nginx-DUghaW/nginx-1.14.0=. -fstack-protector-strong -Wformat -Werror=format-security -
 
-Check status of service of nginx
+fPIC -Wdate-time -D_FORTIFY_SOURCE=2' --with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -Wl,-z,now -fPIC' --prefix=/usr/share/nginx --conf-
 
-sudo service nginx status
-
-if nothing happened when webpage is open is important to check with development team, maybe one line is wrong or missing.
+path=/etc/nginx/nginx.conf --http-log-path=/var/log/nginx/access.log --error-log-path=/var/log/nginx/error.log
 
 
+
+3.- Review the error log for nginx:
+
+user2@localhost:/var/log/nginx$ more error.log
+2019/11/04 14:10:02 [error] 24992#24992: *120 directory index of "/var/www/html/" is forbidden, client: 161.117.199.105, server: , request: "GET / HTTP/1.1", host: "45.33.22.50:443"
+2019/11/04 14:10:03 [error] 24992#24992: *122 directory index of "/var/www/html/" is forbidden, client: 161.117.199.105, server: , request: "GET / HTTP/1.1", host: "45.33.22.50:443"
+2019/11/04 14:10:04 [error] 24992#24992: *123 directory index of "/var/www/html/" is forbidden, client: 161.117.199.105, server: , request: "POST / HTTP/1.1", host: "45.33.22.50:443"
+2019/11/04 14:10:04 [error] 24992#24992: *124 directory index of "/var/www/html/" is forbidden, client: 161.117.199.105, server: , request: "GET / HTTP/1.1", host: "www.psiphon3.com"
+
+5.- Check information about ports:
+
+user2@localhost:/etc/nginx/sites-available$ ls -lrt
+total 8
+-rw-r--r-- 1 root root 136 Oct 31 09:57 default
+-rw-r--r-- 1 root root 135 Oct 31 10:00 test2
+user2@localhost:/etc/nginx/sites-available$ more default
+server {
+  listen 443  default_server;
+  location /test1 {
+        proxy_pass http://localhost:5000/test1;
+  }
+
+  root /var/www/html;
+}
+user2@localhost:/etc/nginx/sites-available$ more test2
+server {
+  listen 444 default_server;
+  location /test2 {
+        proxy_pass http://localhost:5000/test2;
+  }
+
+  root /var/www/html;
+}
+user2@localhost:/etc/nginx/sites-available$
+
+6.- Make tests:
+
+user2@localhost:/var/log/nginx$ curl -i http://45.33.22.50:443/test1
+HTTP/1.1 200 OK
+Server: nginx/1.14.0 (Ubuntu)
+Date: Mon, 04 Nov 2019 21:25:04 GMT
+Content-Type: text/html; charset=utf-8
+Content-Length: 16
+Connection: keep-alive
+
+
+Completed Test 1user2@localhost:/var/log/nginx$ curl -i http://45.33.22.50:444/test2
+curl: (7) Failed to connect to 45.33.22.50 port 444: Connection refused
+user2@localhost:/var/log/nginx$
+
+
+
+7.- Correct URL is:
+
+http://45.33.22.50:443/test1"
+
+8.- For the second URL port 444 can be blocked by firewall, 
 
 
 - Make sure you list in detail what are the steps you followed to identify and resolve the problem.
