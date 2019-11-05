@@ -126,11 +126,47 @@ user2@localhost:/var/log/nginx$
 
 
 
-7.- Correct URL is:
+7.- You can try changing the URL to this:
 
-http://45.33.22.50:443/test1"
+http://45.33.22.50:443/test1
 
-8.- For the second URL port 444 can be blocked by firewall, 
+or if you prefer change the port in default file to 80.
+
+8.- For the second URL port 444 can be blocked by firewall, in fact if we review this log /var/log/ufw.log we can see something like this every time that we make a connection attempt:
+
+Nov  5 03:49:47 localhost kernel: [573764.190918] [UFW BLOCK] IN=eth0 OUT= MAC=f2:3c:92:c8:da:7b:00:1b:54:c2:50:c1:08:00 SRC=187.167.184.145 DST=45.33.22.50 LEN=52 TOS=0x00 PREC=0x00 TTL=120 ID=21602 DF PROTO=TCP SPT=57586 DPT=444 WINDOW=65535 RES=0x00 SYN URGP=0
+
+Here it is important validate the rules created for the firewall of the server:
+
+check rules in /etc/default/ufw
+
+Execute: ufw status numbered (if necessary modify the line)
+
+   Allow: sudo ufw allow 444
+
+
+
+8.1 Check if port 444 is LISTEN:
+
+netstat -tulpn | grep LISTEN
+
+(Not all processes could be identified, non-owned process info
+ will not be shown, you would have to be root to see it all.)
+tcp        0      0 127.0.0.1:5000          0.0.0.0:*               LISTEN      -
+tcp        0      0 127.0.0.53:53           0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      -
+tcp        0      0 0.0.0.0:443             0.0.0.0:*               LISTEN      -
+tcp6       0      0 :::22                   :::*                    LISTEN      -
+user2@localhost:/lib/ufw$
+
+if port is not in LISTEN status we can try to change with this command:
+
+sudo nc -l 77
+
+
+
+
+
 
 
 - Make sure you list in detail what are the steps you followed to identify and resolve the problem.
